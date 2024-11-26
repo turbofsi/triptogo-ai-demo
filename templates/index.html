@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel ChatBot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .chat-container {
+            max-width: 600px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f9f9f9;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .chat-output {
+            margin-top: 20px;
+            padding: 10px;
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <h2>Travel ChatBot</h2>
+        <textarea id="userMessage" rows="4" placeholder="Ask about a travel package..."></textarea>
+        <button onclick="sendMessage()">Send</button>
+        <div id="chatOutput" class="chat-output"></div>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const userMessage = document.getElementById("userMessage").value;
+            if (!userMessage) {
+                alert("Please enter a message.");
+                return;
+            }
+
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: userMessage })
+            });
+
+            const data = await response.json();
+            document.getElementById("chatOutput").innerHTML = `<strong>ChatBot:</strong> ${data.reply}`;
+        }
+    </script>
+</body>
+</html>
